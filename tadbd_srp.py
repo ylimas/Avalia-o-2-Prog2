@@ -1,6 +1,7 @@
 
 
 
+
 def open_bd(tabnamePass, tabnameRes, tabnameVoos):
 
 	#abrindo arquivo e declarando variáveis
@@ -54,13 +55,18 @@ def open_bd(tabnamePass, tabnameRes, tabnameVoos):
 	#perguntar sobre id da reserva
 		tabres[linha[0]] = {}
 
-	#--------FAZER PROCESSAMENTO DOS DADOS DAS RESERVAS-----------------
-	#
-	#
-	#
-	#
-	#
-	#
+		tabres[linha[0]['id']] = linha[0]
+		tabres[linha[1]['data']] = linha[1]
+		tabres[linha[2]['status']] = linha[2]
+		tabres[linha[3]['assento']] = linha[3]
+		tabres[linha[4]['idpass']] = linha[4]
+		tabres[linha[5]['idvoo']] = linha[5]
+
+		linha = arq.readline()
+
+
+
+	tab['reservas'] = tabres
 	file.close()
 
 	#--------------VOOS---------------
@@ -76,17 +82,11 @@ def open_bd(tabnamePass, tabnameRes, tabnameVoos):
 
 
 		tabres[linha[0]['id']] = linha[0]
-
 		tabres[linha[1]['numVoo']] = linha[1]
-		
 		tabres[linha[2]['origem']] = linha[2]
-		
 		tabres[linha[3]['destino']] = linha[3]
-		
 		tabres[linha[4]['dataPda']] = linha[4]
-		
 		tabres[linha[5]['dataChe']] = linha[5]
-		
 		tabres[linha[6]['vagas']] = linha[6]
 
 		linha = file.readline()
@@ -102,18 +102,85 @@ def open_bd(tabnamePass, tabnameRes, tabnameVoos):
 
 def salva_bd(bd, tabnamePass, tabnameRes, tabnameVoo):
 
-	pass
+	#-----------------PASSAGEIROS------------------
+	file = open(tabnamePass, 'w')
 
+	for passageiro in bd['passageiros']:
+		for dado in passageiro.values():
+			file.write(dado + ', ')
+		file.write('\n')
+
+
+	file.close()
+
+
+
+#-----------------RESERVAS---------------------
+	file = open(tabnameRes, 'w')
+
+	for reserva in bd['reservas']:
+		for dado in reserva.values():
+			file.write(dado + ', ')
+		file.write('\n')
+
+	file.close()
+
+
+
+#-----------------VOOS------------------------
+	file = open(tabnameVoos, 'w')
+
+	for voo in bd['voos']:
+		for dado in voo.values():
+			file.write(dado + ', ')
+		file.write('\n')
+
+	file.close()
+
+#FAZER A VERIFICAÇÃO DA ULTIMA LINHA
+
+
+	
 def adPassageiro(bd, idpass, nome, email, fone):
 
-	pass
+	bd['passageiros'][idpass] = {}
+	bd['passageiros'][idpass]['id'] = str(idpass)
+	bd['passageiros'][idpass]['nome'] = str(nome)
+	bd['passageiros'][idpass]['email'] = str(email)
+	bd['passageiros'][idpass]['tel'] = str(fone)
+
+	return bd
 
 def adReserva(bd, idres, data, status, assento, idpass, idvoo):
-	pass
+	
+	bd['reservas'][idres] = {}
+	bd['reservas'][idres]['id'] = str(idres)
+	bd['reservas'][idres]['data'] = str(data)
+	bd['reservas'][idres]['status'] = str(status)
+	bd['reservas'][idres]['assento'] = str(assento)
+	bd['reservas'][idres]['idpass'] = str(idpass)
+	bd['reservas'][idres]['idvoo'] = str(idvoo)
 
+	return bd
 
 def adVoo(bd, idvoo, numvoo, origem, destino, dtpartida, dtchegada):
-	pass
+
+
+	bd['voos'][idvoo] = {}
+
+	bd['voos'][idvoo]['id'] = str(idvoo)
+	bd['voos'][idvoo]['numVoo'] = str(numvoo)
+	bd['voos'][idvoo]['origem'] = str(origem)
+	bd['voos'][idvoo]['destino'] = str(destino)
+	bd['voos'][idvoo]['dataPda'] = str(dtpartida)
+	bd['voos'][idvoo]['dataChe'] = str(dtchegada)
+	#40 lugares sempre
+
+
+
+
+
+
 
 def vooExiste(bd, idvoo):
 	pass	
