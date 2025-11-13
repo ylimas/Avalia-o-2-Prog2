@@ -163,6 +163,7 @@ def adReserva(bd, idres, data, status, assento, idpass, idvoo):
 				bd['reservas'][idres]['assento'] = str(assento)
 				bd['reservas'][idres]['idpass'] = str(idpass)
 				bd['reservas'][idres]['idvoo'] = str(idvoo)
+				bd['voos'][idvoo]['vagas'] -= 1
 
 				return 0
 			else:
@@ -186,7 +187,7 @@ def adVoo(bd, idvoo, numvoo, origem, destino, dtpartida, dtchegada):
 	bd['voos'][idvoo]['dataPda'] = str(dtpartida)
 	bd['voos'][idvoo]['dataChe'] = str(dtchegada)
 	#40 lugares fixo
-	bd['voos'][idvoo]['vagas'] = str(40)
+	bd['voos'][idvoo]['vagas'] = 40
 
 	return bd
 #------------TESTADO!-------------
