@@ -9,7 +9,7 @@ def adPassageiro(idpass, nome, email, fone):
 	tadbd.adPassageiro(bd, idpass, nome, email, fone)
 
 def adReserva(idres, data, status, assento, idpass, idvoo):
-	tadbd.adReserva(bd, idres, data, status, assento, idpass, idvoo)
+	tadbd.adReserva(bd, idres, bd['voos'][idvoo]['dataPda'], 'confirmada', assento, idpass, idvoo)
 
 def adVoo(idvoo, numvoo, origem, destino, dtpartida, dtchegada):
 	tadbd.adVoo(bd, idvoo, numvoo, origem, destino, dtpartida, dtchegada)
@@ -41,7 +41,7 @@ def assentoLivre(idvoo, assento):
 
 
 def main():
-	print("Servidor SRP rodando na porta 8000...")
+	print("Servidor SRP rodando na porta Local 8000...")
 	server = SimpleXMLRPCServer(("localhost", 8000))
 
 
