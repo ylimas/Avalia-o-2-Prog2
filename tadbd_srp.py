@@ -1,12 +1,3 @@
-#Dúvidas:
-# deveria diminuir automaticamente as vagas? ou isso é uma coisa que o cliente deve fazer?
-
-
-
-
-
-
-
 #------------TESTADO!-------------
 def open_bd(tabnamePass, tabnameRes, tabnameVoos): 
 
@@ -222,3 +213,4 @@ def assentoLivre(bd, idvoo, assento):
 		if reserva['idvoo'] == idvoo and reserva['assento'] == assento:
 			return False
 	return True
+
