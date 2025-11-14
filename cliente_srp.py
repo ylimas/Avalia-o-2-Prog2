@@ -43,28 +43,71 @@ def main():
 					else:
 						adReserva(bd, idres, 'confirmada', assento, idpass, idvoo)
 						print('Sua reserva foi confirmada!')
+						voo = srp.getVoo(idvoo)
+						bdpass = srp.getPass(idpass)
+						res = srp.getRes(idres)
 
 
 						#idpass, nome, email, telefone
 						print('-------------DADOS DO PASSAGEIRO-------------')
-						print(f'ID do Passageiro:   {bd['passageiro'][idpass]['id']}')
-						print(f'Nome:   {bd['passageiro'][idpass]['nome']}')
-						print(f'Email:   {bd['passageiro'][idpass]['email']}')
-						print(f'Telefone:   {bd['passageiro'][idpass]['tel']}')
+						print(f'ID do Passageiro:   {bdpass['id']}')
+						print(f'Nome:   {bdpass['nome']}')
+						print(f'Email:   {bdpass['email']}')
+						print(f'Telefone:   {bdpas['tel']}')
 						print('\n\n')
 						
 
 						#idres, status, assento, idpass, idvoo
 						print('------------DADOS DA RESERVA-------------')
-						print(f'ID da Reserva:   {bd['reservas'][idres]['id']}')
-						print(f'Data:   {bd['reservas'][idres]['data']}')
-						print(f'Status:   {bd['reservas'][idres]['status']}')
-						print(f'Assento:   {bd['reservas'][idres]['assento']}')
-						print(f'ID do Passageiro:   {bd['passageiro'][idpass]['id']}')
-						print(f'ID do Voo:   {bd['reservas'][idres]['idvoo']}')
+						print(f'ID da Reserva:   {res['id']}')
+						print(f'Data:   {res['data']}')
+						print(f'Status:   {res['status']}')
+						print(f'Assento:   {res['assento']}')
+						print(f'ID do Passageiro:   {bdpass['id']}')
+						print(f'ID do Voo:   {voo['idvoo']}')
 						print('\n\n')
 
 
 						#idvoo, numvoo, origem, destino, dtpartida, dtchegada
 						print('------------DADOS DO VOO------------')
-						print('')
+						print(f'ID do VOO:   {voo['id']}')
+						print(f'Número do Voo:   {voo['numVoo']}')
+						print(f'Ponto de embarque:   {voo['origem']}')
+						print(f'Data da Partida:   {voo['dataPda']}')
+						print(f'Ponto de Desembarque:   {voo['destino']}')
+						print(f'Data de Chegada:   {voo['dataChe']}')
+						print('\n\n\n\n')
+
+
+
+
+
+		elif escolha == 2:
+			idpass = input('Informe o ID do passageiro: ')
+			
+
+			#VERIFICA SE O ID JÁ EXISTE
+			val = srp.passExiste(idpass)
+				while val == False:
+					idpass = input('O ID já está sendo utilizado. Insira outro: ')
+					val = srp.passExiste(idpass)
+
+			nome = input('Informe o nome do passageiro: ')
+			email = input('Informe o Email do passageiro: ')
+			tel = input('Informe o telefone do passageiro: ')
+
+			srp.adPass(idpass, nome, email, tel)
+			print('Passageiro cadastrado com sucesso!\n\n')
+
+		elif escolha == 3:
+			#idvoo, numvoo, origem, destino, dtpartida, dtchegada
+			idvoo = input('Informe o ID do voo:  ')
+
+			#VERIFICANDO SE O ID JÁ EXISTE
+			val = srp.vooExiste(idvoo)
+			while val == False:
+				idvoo = input('O ID já está sendo utilizado. Insira outro: ')
+				val = srp.vooExiste(idvoo)
+
+
+
