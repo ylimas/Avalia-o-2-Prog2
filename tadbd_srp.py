@@ -1,16 +1,8 @@
-#Dúvidas:
-# deveria diminuir automaticamente as vagas? ou isso é uma coisa que o cliente deve fazer?
-
-
-
-
-
 
 
 #------------TESTADO!-------------
 def open_bd(tabnamePass, tabnameRes, tabnameVoos): 
 
-	#abrindo arquivo e declarando variáveis
 	file = open(tabnamePass, 'r', encoding='utf-8')
 	linha = file.readline()
 
@@ -19,37 +11,24 @@ def open_bd(tabnamePass, tabnameRes, tabnameVoos):
 	tabpass = {}
 	tabvoos = {}
 
-
-
-	#lendo cada linha até ler uma linha vazia
 	while linha != '':
 
 		linha = linha.strip()
 		linha = linha.split(',')
 
-		#tratando os dados da linha
 		tabpass[linha[0]] = {}
 
-		#preenchendo o id
 		tabpass[linha[0]]['id'] = linha[0]
-		#preenchendo o nome
 		tabpass[linha[0]]['nome'] = linha[1]
-		#preenchendo o email
 		tabpass[linha[0]]['email'] = linha[2]
-		#preenchendo o telefone
 		tabpass[linha[0]]['tel'] = linha[3]
 
 		linha = file.readline()
 
-
 	file.close()
 
-	#colocando os passageiros do dicionário principal
 	tab['passageiros'] = tabpass
 
-
-
-	#repetindo o processo agora com as reservas
 	file = open(tabnameRes, 'r', encoding='utf-8')
 	linha = file.readline()
 
@@ -57,8 +36,6 @@ def open_bd(tabnamePass, tabnameRes, tabnameVoos):
 		linha = linha.strip()
 		linha = linha.split(',')
 
-
-	#perguntar sobre id da reserva
 		tabres[linha[0]] = {}
 
 		tabres[linha[0]]['id'] = linha[0]
@@ -70,14 +47,10 @@ def open_bd(tabnamePass, tabnameRes, tabnameVoos):
 
 		linha = file.readline()
 
-
-
 	tab['reservas'] = tabres
 	file.close()
 
-	#--------------VOOS---------------
 	file = open(tabnameVoos, 'r', encoding='utf-8')
-
 
 	linha = file.readline()
 	while linha != '':
@@ -86,14 +59,13 @@ def open_bd(tabnamePass, tabnameRes, tabnameVoos):
 
 		tabvoos[linha[0]] = {}
 
-
 		tabvoos[linha[0]]['id'] = linha[0]
 		tabvoos[linha[0]]['numVoo'] = linha[1]
 		tabvoos[linha[0]]['origem'] = linha[2]
 		tabvoos[linha[0]]['destino'] = linha[3]
 		tabvoos[linha[0]]['dataPda'] = linha[4]
 		tabvoos[linha[0]]['dataChe'] = linha[5]
-		tabvoos[linha[0]]['vagas'] = linha[6]
+		tabvoos[linha[0]]['vagas'] = 40
 
 		linha = file.readline()
 
@@ -101,25 +73,18 @@ def open_bd(tabnamePass, tabnameRes, tabnameVoos):
 
 	return tab
 
-
-
-
-
 #------------TESTADO!-------------
 def salva_bd(bd, tabnamePass, tabnameRes, tabnameVoos):
 
-
-	#-----------------PASSAGEIROS------------------
 	file = open(tabnamePass, 'w', encoding='utf-8')
 	for passageiro in bd['passageiros'].values():
 		if passageiro:
 			linha = ''
 			for dado in passageiro.values():
 				linha += str(dado) + ','
-			file.write(linha[:-2] + '\n')  # remove ", "
+			file.write(linha[:-2] + '\n')
 	file.close()
 
-	#-----------------RESERVAS---------------------
 	file = open(tabnameRes, 'w', encoding='utf-8')
 	for reserva in bd['reservas'].values():
 		if reserva:
@@ -129,7 +94,6 @@ def salva_bd(bd, tabnamePass, tabnameRes, tabnameVoos):
 			file.write(linha[:-2] + '\n')
 	file.close()
 
-	#-----------------VOOS------------------------
 	file = open(tabnameVoos, 'w', encoding='utf-8')
 	for voo in bd['voos'].values():
 		if voo:
@@ -138,6 +102,7 @@ def salva_bd(bd, tabnamePass, tabnameRes, tabnameVoos):
 				linha += str(dado) + ','
 			file.write(linha[:-2] + '\n')
 	file.close()
+
 #------------TESTADO!-------------
 def adPassageiro(bd, idpass, nome, email, fone):
 
@@ -148,11 +113,10 @@ def adPassageiro(bd, idpass, nome, email, fone):
 	bd['passageiros'][idpass]['tel'] = str(fone)
 
 	return bd
+
 #------------TESTADO!-------------
 def adReserva(bd, idres, data, status, assento, idpass, idvoo):
-	
-	
-	
+
 	if passExiste(bd, idpass) == True:
 		if vooExiste(bd, idvoo) == True and vagasVoo(bd, idvoo) > 0:
 			if assentoLivre(bd, idvoo, assento):
@@ -163,20 +127,18 @@ def adReserva(bd, idres, data, status, assento, idpass, idvoo):
 				bd['reservas'][idres]['assento'] = str(assento)
 				bd['reservas'][idres]['idpass'] = str(idpass)
 				bd['reservas'][idres]['idvoo'] = str(idvoo)
-				bd['voos'][idvoo]['vagas'] -= 1
-
 				return 0
 			else:
 				return 4
-		elif vagasVoo(bd, idvoo) <= 0:
-			return 3
 		elif vooExiste(bd, idvoo) == False:
 			return 2
+		elif vagasVoo(bd, idvoo) <= 0:
+			return 3
 	else:
 		return 1
+
 #------------TESTADO!-------------
 def adVoo(bd, idvoo, numvoo, origem, destino, dtpartida, dtchegada):
-
 
 	bd['voos'][idvoo] = {}
 
@@ -186,33 +148,35 @@ def adVoo(bd, idvoo, numvoo, origem, destino, dtpartida, dtchegada):
 	bd['voos'][idvoo]['destino'] = str(destino)
 	bd['voos'][idvoo]['dataPda'] = str(dtpartida)
 	bd['voos'][idvoo]['dataChe'] = str(dtchegada)
-	#40 lugares fixo
 	bd['voos'][idvoo]['vagas'] = 40
 
 	return bd
+
 #------------TESTADO!-------------
 def vooExiste(bd, idvoo):
 	for voo in bd['voos'].values():
 		if idvoo == voo['id']:
 			return True
 	return False
+
 #------------TESTADO!-------------
 def passExiste(bd, idpass):
 	for passageiro in bd['passageiros'].values():
 		if idpass == passageiro['id']:
 			return True
 	return False
+
 #------------TESTADO!-------------
 def vagasVoo(bd, idvoo):
-	#retorna a quantidade de vagas;
-	#caso o voo não exista, retorna o código -1
-
-	#verificando se o voo existe
-
 	if vooExiste(bd, idvoo) == False:
 		return -1
+	total = 40
+	cont = 0
+	for reserva in bd['reservas'].values():
+		if reserva['idvoo'] == idvoo:
+			cont += 1
+	return total - cont
 
-	return int(bd['voos'][idvoo]['vagas'])
 #------------TESTADO!-------------
 def assentoLivre(bd, idvoo, assento):
 	if vooExiste(bd, idvoo) == False:
